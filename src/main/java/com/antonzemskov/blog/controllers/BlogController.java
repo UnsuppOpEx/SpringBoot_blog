@@ -26,10 +26,20 @@ public class BlogController {
     }
 
     @RequestMapping(value = "blog/add", method = RequestMethod.GET)
-    public String addMain(Model model) {
+    public String blogAdd(Model model) {
         List<Post> posts = postRepository.findAll();
         model.addAttribute("posts", posts);
         return "blog-add";
+    }
+
+    @RequestMapping(value = "blog/add", method = RequestMethod.POST)
+    public String blogPostAdd(@RequestParam(value = "title") String title,
+                              @RequestParam(value = "anons") String anons,
+                              @RequestParam(value = "full_text") String full_text,
+                              Model model) {
+        Post post = new Post(title, anons, full_text);
+        postRepository.save(post);
+        return "redirect:/blog";
     }
 
 }
